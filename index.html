@@ -414,6 +414,32 @@ header{
 .contact-meta span b{color:var(--text-1);font-family:var(--font-head);font-weight:600;}
 .contact-meta a{color:var(--color-primary);text-decoration:underline;text-decoration-color:var(--border-quote);text-underline-offset:2px;}
 .contact-meta a:hover{color:var(--color-primary-dark);}
+.map-card{
+  display:block;
+  margin-top:22px;
+  border-radius:10px;
+  overflow:hidden;
+  border:1px solid var(--border);
+  position:relative;
+  aspect-ratio:16/9;
+  background:var(--bg);
+}
+.map-card iframe{
+  position:absolute;top:0;left:0;width:100%;height:100%;border:0;
+  pointer-events:none;
+}
+.map-card-overlay{
+  position:absolute;inset:0;
+  display:flex;align-items:flex-end;
+  background:linear-gradient(to top, rgba(43,35,32,.65), rgba(43,35,32,0) 55%);
+}
+.map-card-label{
+  display:inline-flex;align-items:center;gap:6px;
+  margin:16px;padding:9px 14px;border-radius:20px;
+  background:#fff;color:var(--text-1);
+  font-family:var(--font-head);font-weight:600;font-size:13px;
+}
+.map-card-label svg{width:15px;height:15px;stroke:var(--color-primary);}
 
 /* ============ FOOTER ============ */
 footer{background:var(--text-1);color:#DCD2C9;padding:48px 0 28px;}
@@ -1003,6 +1029,21 @@ footer{background:var(--text-1);color:#DCD2C9;padding:48px 0 28px;}
         <span><b>Horario:</b> Lunes a viernes, 9:00–14:00 y 16:00–20:00</span>
         <span><b>Email:</b> <a href="mailto:gsauco@clinicasauco.es">gsauco@clinicasauco.es</a></span>
       </div>
+      <a
+        href="https://www.google.com/maps/search/?api=1&query=Cl%C3%ADnica%20Sa%C3%BAco%2C%20Calle%20Bobby%20Deglan%C3%A9%201%2C%2041001%20Sevilla"
+        target="_blank" rel="noopener"
+        class="map-card"
+        aria-label="Abrir la ubicación de Clínica Saúco en Google Maps">
+        <iframe
+          src="https://www.google.com/maps?q=Cl%C3%ADnica%20Sa%C3%BAco%2C%20Calle%20Bobby%20Deglan%C3%A9%201%2C%2041001%20Sevilla&output=embed"
+          loading="lazy" title="Ubicación de Clínica Saúco"></iframe>
+        <div class="map-card-overlay">
+          <span class="map-card-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8c0 4.5-6 11-6 11S6 12.5 6 8a6 6 0 0 1 12 0Z"/><circle cx="12" cy="8" r="2"/></svg>
+            Cómo llegar en Google Maps
+          </span>
+        </div>
+      </a>
     </div>
     <div class="reveal">
       <form class="contact-form" id="contactForm">
