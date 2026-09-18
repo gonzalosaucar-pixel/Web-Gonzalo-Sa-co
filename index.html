@@ -525,6 +525,51 @@ footer{background:var(--text-1);color:#DCD2C9;padding:48px 0 28px;}
   font-family:var(--font-body);font-style:italic;font-size:15.5px;color:var(--color-primary);
 }
 
+/* ============ PÁGINAS A PANTALLA COMPLETA (blog) ============ */
+.full-page{
+  display:none;
+  position:fixed;inset:0;z-index:150;
+  background:var(--bg-white);
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+}
+.full-page.open{display:block;}
+.full-page-header{
+  position:sticky;top:0;z-index:5;
+  background:rgba(255,255,255,.95);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--border);
+  padding:18px 24px;
+}
+.full-page-header-inner{
+  max-width:760px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.full-page-back{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--font-head);font-weight:600;font-size:14px;color:var(--text-1);
+  background:none;border:none;cursor:pointer;padding:6px 0;
+}
+.full-page-back:hover{color:var(--color-primary);}
+.full-page-back svg{width:16px;height:16px;}
+.full-page-logo{font-family:var(--font-head);font-weight:800;font-size:16px;}
+.full-page-logo span{color:var(--color-primary);}
+.full-page-content{max-width:760px;margin:0 auto;padding:48px 24px 80px;}
+@media(max-width:600px){.full-page-content{padding:32px 20px 64px;}}
+
+.full-page-content .article-kicker{margin-bottom:14px;}
+.full-page-content h1{font-size:clamp(26px,4vw,38px);margin-bottom:28px;line-height:1.2;}
+
+/* índice del blog */
+.blog-index-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;}
+@media(max-width:700px){.blog-index-grid{grid-template-columns:1fr;}}
+.blog-index-intro{font-size:15.5px;color:var(--text-2);max-width:60ch;margin-bottom:40px;}
+.blog-see-all{
+  display:inline-flex;align-items:center;gap:6px;margin-top:8px;
+  font-family:var(--font-head);font-weight:600;font-size:14.5px;color:var(--color-primary);
+  background:none;border:none;cursor:pointer;padding:0;
+}
+.blog-see-all:hover{text-decoration:underline;}
+
 /* sticky mobile whatsapp */
 .floating-wsp{
   position:fixed;bottom:20px;right:20px;z-index:90;
@@ -539,6 +584,7 @@ footer{background:var(--text-1);color:#DCD2C9;padding:48px 0 28px;}
 </head>
 <body>
 
+<div id="mainSite">
 <header>
   <div class="nav">
     <a href="#" class="logo">Gonzalo <span>Saúco</span></a>
@@ -902,7 +948,7 @@ footer{background:var(--text-1);color:#DCD2C9;padding:48px 0 28px;}
       <h2>Recursos para entender <em>tu proceso</em></h2>
     </div>
     <div class="blog-grid">
-      <article class="blog-card reveal open-article" data-article="bienvenida">
+      <article class="blog-card reveal open-article-page" data-article="bienvenida">
         <div class="blog-thumb"></div>
         <div class="blog-body">
           <span class="blog-cat">Bienvenida</span>
@@ -911,7 +957,7 @@ footer{background:var(--text-1);color:#DCD2C9;padding:48px 0 28px;}
           <span class="blog-read">Leer artículo →</span>
         </div>
       </article>
-      <article class="blog-card reveal open-article" data-article="primera-consulta">
+      <article class="blog-card reveal open-article-page" data-article="primera-consulta">
         <div class="blog-thumb"></div>
         <div class="blog-body">
           <span class="blog-cat">Nuestro método</span>
@@ -920,7 +966,7 @@ footer{background:var(--text-1);color:#DCD2C9;padding:48px 0 28px;}
           <span class="blog-read">Leer artículo →</span>
         </div>
       </article>
-      <article class="blog-card reveal open-article" data-article="dolor-orofacial">
+      <article class="blog-card reveal open-article-page" data-article="dolor-orofacial">
         <div class="blog-thumb"></div>
         <div class="blog-body">
           <span class="blog-cat">Tratamiento</span>
@@ -930,6 +976,10 @@ footer{background:var(--text-1);color:#DCD2C9;padding:48px 0 28px;}
         </div>
       </article>
     </div>
+    <button type="button" class="blog-see-all" id="blogSeeAll">
+      Ver todos los artículos
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+    </button>
   </div>
 </section>
 
@@ -1001,10 +1051,48 @@ footer{background:var(--text-1);color:#DCD2C9;padding:48px 0 28px;}
     </div>
   </div>
 </footer>
+</div>
 
 <a href="https://wa.me/34632309980" target="_blank" class="floating-wsp" aria-label="Escribir por WhatsApp">
   <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1-.2.3-.8.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.1.2-.3.3-.4.1-.2 0-.4 0-.5 0-.1-.7-1.6-.9-2.2-.2-.5-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1.1 2.8 1.2 3c.1.2 2.1 3.2 5.1 4.4.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 2-1.3.2-.6.2-1.2.2-1.3-.1-.1-.3-.2-.6-.3z"/><path d="M12 2C6.5 2 2 6.5 2 12c0 1.9.5 3.6 1.4 5.1L2 22l5.1-1.3c1.4.8 3.1 1.3 4.9 1.3 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.3c-1.6 0-3.1-.4-4.4-1.2l-.3-.2-3.1.8.8-3-.2-.3C4 15 3.6 13.5 3.6 12 3.6 7.4 7.4 3.6 12 3.6S20.4 7.4 20.4 12 16.6 20.3 12 20.3z"/></svg>
 </a>
+
+<!-- ============ PÁGINA: ÍNDICE DEL BLOG ============ -->
+<div class="full-page" id="blogIndexPage" aria-hidden="true">
+  <div class="full-page-header">
+    <div class="full-page-header-inner">
+      <span class="full-page-logo">Gonzalo <span>Saúco</span></span>
+      <button type="button" class="full-page-back" id="blogIndexBack">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+        Volver a la web
+      </button>
+    </div>
+  </div>
+  <div class="full-page-content">
+    <span class="kicker">Blog</span>
+    <h1>Todos los artículos</h1>
+    <p class="blog-index-intro">Recursos para entender qué te está pasando y cómo abordarlo, escritos por Gonzalo Saúco.</p>
+    <div class="blog-index-grid" id="blogIndexGrid"></div>
+  </div>
+</div>
+
+<!-- ============ PÁGINA: ARTÍCULO DEL BLOG ============ -->
+<div class="full-page" id="articlePage" aria-hidden="true">
+  <div class="full-page-header">
+    <div class="full-page-header-inner">
+      <span class="full-page-logo">Gonzalo <span>Saúco</span></span>
+      <button type="button" class="full-page-back" id="articlePageBack">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+        Todos los artículos
+      </button>
+    </div>
+  </div>
+  <div class="full-page-content">
+    <span class="article-kicker" id="articlePageKicker">Blog</span>
+    <h1 id="articlePageTitle">Título del artículo</h1>
+    <div class="article-body" id="articlePageBody"></div>
+  </div>
+</div>
 
 <!-- ============ MODAL: ¿ES PARA MÍ? ============ -->
 <div class="modal-overlay" id="quizModal" aria-hidden="true">
@@ -1315,10 +1403,12 @@ document.querySelectorAll('.faq-item').forEach(item => {
 });
 
 // ===== Modal: artículos del blog =====
-const articles = {
+const blogArticles = {
   'bienvenida': {
+    cat: 'Bienvenida',
     kicker: 'Bienvenida',
     title: 'Bienvenida al blog',
+    summary: 'Qué puede hacer la fisioterapia de la ATM por ti, y qué vas a encontrar en este espacio.',
     body: `
       <p>Si estás leyendo este blog es porque probablemente tienes dolor u otros síntomas relacionados con la ATM. Es probable también que te hayan dicho que "pruebes la fisioterapia" o que "puede ayudarte". Mi objetivo con este blog es mostrarte qué puede hacer la fisioterapia de la ATM por ti y por tus síntomas, de una manera sencilla, cercana y actualizada.</p>
 
@@ -1341,8 +1431,10 @@ const articles = {
     `
   },
   'primera-consulta': {
+    cat: 'Nuestro método',
     kicker: 'Nuestro método',
     title: 'Cómo es una primera consulta con nosotros',
+    summary: 'La entrevista, la exploración física y cómo salimos de esa primera sesión con un plan claro.',
     body: `
       <p>La primera consulta es para nosotros el momento más relevante del tratamiento de nuestros pacientes. Le damos una importancia máxima, porque para llegar a una meta hay que tener claro qué camino seguir y qué hacer — si no, solo estamos dando pasos sin rumbo.</p>
       <p>Para tener claro ese camino que nos lleve al éxito, hay que remontarse a los inicios del problema: conocer tu historia, tus antecedentes, tus hábitos, el comportamiento de tus síntomas, tus experiencias previas y los tratamientos que has seguido.</p>
@@ -1362,8 +1454,10 @@ const articles = {
     `
   },
   'dolor-orofacial': {
+    cat: 'Tratamiento',
     kicker: 'Tratamiento',
     title: 'Combatiendo el dolor orofacial',
+    summary: 'Las herramientas reales de la fisioterapia frente al dolor orofacial, más allá de la terapia manual.',
     body: `
       <p>Hola, queridos lectores. Gracias por pasarte por aquí a descubrir esta pequeña píldora de conocimiento que espero que encuentres de interés y te pueda ayudar. Imagino que, si estás leyendo estas líneas, tienes dolor orofacial y posiblemente otros síntomas asociados.</p>
       <p>No es mi intención en este artículo daros ninguna receta para enfrentaros a vuestro dolor. Si lo hiciera, os estaría engañando: cada caso de dolor orofacial es único, y depende de factores relacionados con los tejidos (el estado de la articulación temporomandibular o de la columna cervical, por ejemplo), pero también de otros factores que llamamos "psicosociales", relacionados con nuestra historia, comportamiento y conducta frente al dolor. Esto lo abordaremos en otra entrada del blog, porque hay mucha tela que cortar.</p>
@@ -1392,7 +1486,10 @@ const articles = {
       <p>Como ves, tenemos múltiples herramientas con las que podemos combatir tu dolor. La mayoría de pacientes las desconoce, y solo busca de la fisioterapia la terapia manual — que es positiva, pero si solo utilizamos esa, queda mucho margen de mejora que no estamos aprovechando.</p>
       <p class="article-closer">Y recuerda: cada pequeño paso que das hoy es un paso menos hacia tu recuperación.</p>
     `
-  },
+  }
+};
+
+const legalDocs = {
   'aviso-legal': {
     kicker: 'Información legal',
     title: 'Aviso legal',
@@ -1451,7 +1548,7 @@ const articleTitleEl = document.getElementById('articleTitle');
 const articleBodyEl = document.getElementById('articleBody');
 
 function openArticle(key){
-  const data = articles[key];
+  const data = legalDocs[key];
   if (!data) return;
   articleKickerEl.textContent = data.kicker;
   articleTitleEl.textContent = data.title;
@@ -1480,6 +1577,77 @@ articleModal.addEventListener('click', (e) => {
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && articleModal.classList.contains('open')) closeArticle();
 });
+
+// ===== Blog: páginas a pantalla completa (índice + artículo) =====
+const mainSite = document.getElementById('mainSite');
+const blogIndexPage = document.getElementById('blogIndexPage');
+const articlePage = document.getElementById('articlePage');
+const blogIndexGrid = document.getElementById('blogIndexGrid');
+const articlePageKicker = document.getElementById('articlePageKicker');
+const articlePageTitle = document.getElementById('articlePageTitle');
+const articlePageBody = document.getElementById('articlePageBody');
+
+function hideFullPages(){
+  blogIndexPage.classList.remove('open');
+  blogIndexPage.setAttribute('aria-hidden','true');
+  articlePage.classList.remove('open');
+  articlePage.setAttribute('aria-hidden','true');
+}
+function showMainSite(){
+  hideFullPages();
+  mainSite.style.display = '';
+  window.scrollTo(0,0);
+}
+function renderBlogIndex(){
+  blogIndexGrid.innerHTML = Object.keys(blogArticles).map(key => {
+    const a = blogArticles[key];
+    return `
+      <article class="blog-card open-article-page" data-article="${key}">
+        <div class="blog-thumb"></div>
+        <div class="blog-body">
+          <span class="blog-cat">${a.cat}</span>
+          <h4>${a.title}</h4>
+          <p>${a.summary}</p>
+          <span class="blog-read">Leer artículo →</span>
+        </div>
+      </article>
+    `;
+  }).join('');
+  // los cards recién creados necesitan su propio listener
+  blogIndexGrid.querySelectorAll('.open-article-page').forEach(card => {
+    card.addEventListener('click', () => showArticlePage(card.dataset.article));
+  });
+}
+function showBlogIndex(){
+  renderBlogIndex();
+  mainSite.style.display = 'none';
+  hideFullPages();
+  blogIndexPage.classList.add('open');
+  blogIndexPage.setAttribute('aria-hidden','false');
+  window.scrollTo(0,0);
+}
+function showArticlePage(key){
+  const data = blogArticles[key];
+  if (!data) return;
+  articlePageKicker.textContent = data.kicker;
+  articlePageTitle.textContent = data.title;
+  articlePageBody.innerHTML = data.body;
+  mainSite.style.display = 'none';
+  hideFullPages();
+  articlePage.classList.add('open');
+  articlePage.setAttribute('aria-hidden','false');
+  window.scrollTo(0,0);
+}
+
+// tarjetas de la portada
+document.querySelectorAll('.open-article-page').forEach(card => {
+  card.addEventListener('click', () => showArticlePage(card.dataset.article));
+});
+// enlace "ver todos los artículos"
+document.getElementById('blogSeeAll').addEventListener('click', showBlogIndex);
+// botones "volver"
+document.getElementById('blogIndexBack').addEventListener('click', showMainSite);
+document.getElementById('articlePageBack').addEventListener('click', showBlogIndex);
 </script>
 
 </body>
