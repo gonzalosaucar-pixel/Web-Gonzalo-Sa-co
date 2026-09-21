@@ -1085,6 +1085,7 @@ footer{background:var(--text-1);color:#DCD2C9;padding:48px 0 28px;}
     </div>
     <div class="reveal">
       <form class="contact-form" id="contactForm">
+        <input type="text" name="website" id="cWebsite" style="position:absolute;left:-9999px;" tabindex="-1" autocomplete="off">
         <div>
           <label for="cName">Nombre</label>
           <input type="text" id="cName" required>
@@ -1316,18 +1317,43 @@ if (arcEl) io.observe(arcEl);
 // ===== Contact form =====
 const contactForm = document.getElementById('contactForm');
 const contactMsg = document.getElementById('contactMsg');
-contactForm.addEventListener('submit', function(e){
+const contactSubmitBtn = contactForm.querySelector('button[type="submit"]');
+contactForm.addEventListener('submit', async function(e){
   e.preventDefault();
+  const name = document.getElementById('cName').value.trim();
   const email = document.getElementById('cEmail').value.trim();
+  const message = document.getElementById('cMsg').value.trim();
+  const website = document.getElementById('cWebsite').value; // honeypot
   const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
   if (!emailOk) {
     contactMsg.textContent = 'Introduce un email válido para poder responderte.';
     contactMsg.className = 'form-msg show err';
     return;
   }
-  contactMsg.textContent = 'Mensaje enviado. Te responderé personalmente en menos de 24-48h.';
-  contactMsg.className = 'form-msg show ok';
-  contactForm.reset();
+
+  contactSubmitBtn.disabled = true;
+  contactSubmitBtn.textContent = 'Enviando...';
+
+  try {
+    const res = await fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, message, website })
+    });
+
+    if (!res.ok) throw new Error('send-failed');
+
+    contactMsg.textContent = 'Mensaje enviado. Te responderé personalmente en menos de 24-48h.';
+    contactMsg.className = 'form-msg show ok';
+    contactForm.reset();
+  } catch (err) {
+    contactMsg.textContent = 'No se pudo enviar el mensaje. Escríbeme mejor por WhatsApp, por favor.';
+    contactMsg.className = 'form-msg show err';
+  } finally {
+    contactSubmitBtn.disabled = false;
+    contactSubmitBtn.textContent = 'Enviar mensaje';
+  }
 });
 
 // ===== Modal: ¿Es para mí? (cuestionario de 4 pasos) =====
