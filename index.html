@@ -1704,6 +1704,7 @@ function showMainSite(){
   hideFullPages();
   mainSite.style.display = '';
   window.scrollTo(0,0);
+  history.pushState(null, '', window.location.pathname);
 }
 function renderBlogIndex(){
   blogIndexGrid.innerHTML = Object.keys(blogArticles).map(key => {
@@ -1725,15 +1726,16 @@ function renderBlogIndex(){
     card.addEventListener('click', () => showArticlePage(card.dataset.article));
   });
 }
-function showBlogIndex(){
+function showBlogIndex(updateUrl = true){
   renderBlogIndex();
   mainSite.style.display = 'none';
   hideFullPages();
   blogIndexPage.classList.add('open');
   blogIndexPage.setAttribute('aria-hidden','false');
   window.scrollTo(0,0);
+  if (updateUrl) history.pushState(null, '', '#blog');
 }
-function showArticlePage(key){
+function showArticlePage(key, updateUrl = true){
   const data = blogArticles[key];
   if (!data) return;
   articlePageKicker.textContent = data.kicker;
@@ -1744,6 +1746,7 @@ function showArticlePage(key){
   articlePage.classList.add('open');
   articlePage.setAttribute('aria-hidden','false');
   window.scrollTo(0,0);
+  if (updateUrl) history.pushState(null, '', '#blog-' + key);
 }
 
 // tarjetas de la portada
@@ -1751,10 +1754,23 @@ document.querySelectorAll('.open-article-page').forEach(card => {
   card.addEventListener('click', () => showArticlePage(card.dataset.article));
 });
 // enlace "ver todos los artículos"
-document.getElementById('blogSeeAll').addEventListener('click', showBlogIndex);
+document.getElementById('blogSeeAll').addEventListener('click', () => showBlogIndex());
 // botones "volver"
 document.getElementById('blogIndexBack').addEventListener('click', showMainSite);
-document.getElementById('articlePageBack').addEventListener('click', showBlogIndex);
+document.getElementById('articlePageBack').addEventListener('click', () => showBlogIndex());
+
+// abrir automáticamente el artículo o el índice si se llega con un enlace directo (#blog-clave o #blog)
+function openFromHash(){
+  const hash = window.location.hash.replace('#', '');
+  if (hash === 'blog') {
+    showBlogIndex(false);
+  } else if (hash.startsWith('blog-')) {
+    const key = hash.replace('blog-', '');
+    if (blogArticles[key]) showArticlePage(key, false);
+  }
+}
+openFromHash();
+window.addEventListener('popstate', openFromHash);
 </script>
 
 </body>
